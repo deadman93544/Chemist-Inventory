@@ -39,6 +39,16 @@ public class CustomerService {
                 .orElseThrow(RuntimeException::new);
     }
 
+    public Customer getOrCreateCustomer(CustomerRequest customerRequest){
+        return customerRepository.findById(customerRequest.getId())
+                .orElse(customerRepository.saveAndFlush(new Customer(customerRequest.getName(), customerRequest.getPhoneNum(), 0)));
+    }
+
+    public void updateCustomerBalance(Customer customer, double balance){
+        customer.setBalance(customer.getBalance() + balance);
+        customerRepository.saveAndFlush(customer);
+    }
+
     public void updateCustomer(CustomerRequest customerRequest){
         Customer customer = customerRepository.findById(customerRequest.getId()).orElseThrow(RuntimeException::new);
         logger.info("Customer found with CustomerId: {} to update", customerRequest.getId());

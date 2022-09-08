@@ -40,6 +40,12 @@ public class ItemService {
                 .orElseThrow(RuntimeException::new);
     }
 
+    public Item getItemById(ItemRequest itemRequest) {
+        logger.info("Finding an Item with Id: {}", itemRequest.getId());
+        return itemRepository.findById(itemRequest.getId())
+                .orElseThrow(RuntimeException::new);
+    }
+
     public void updateItem(ItemRequest itemRequest){
         Item item = itemRepository.findById(itemRequest.getId()).orElseThrow(RuntimeException::new);
         logger.info("Updating an Item with Id: {}", itemRequest.getId());

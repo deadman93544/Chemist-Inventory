@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,6 +21,36 @@ public class MonthSaleService {
 
     @Autowired
     private MonthSaleRepository monthSaleRepository;
+
+    public MonthSale createMonthSale(){
+        MonthSale monthSale = monthSaleRepository.findTopByOrderByCreatedDateDesc();
+        Calendar calendar = Calendar.getInstance();
+        if (monthSale == null
+                || monthSale.getMonth() != calendar.get(Calendar.MONTH) + 1
+                || monthSale.getYear() != calendar.get(Calendar.YEAR)) {
+
+            MonthSale newMonthSale = new MonthSale(
+                    calendar.get(Calendar.MONTH) + 1,
+                    calendar.get(Calendar.YEAR),
+                    0, 0, 0);
+            logger.info("Creating new MonthSale with month {} and year {}", newMonthSale.getMonth(), newMonthSale.getYear());
+            return monthSaleRepository.saveAndFlush(newMonthSale);
+        }
+        else {
+            logger.info("MonthSale for current month {} is already available", monthSale.getMonth());
+            return monthSale;
+        }
+
+    }
+
+    public void updateMonthSale(long Id, double saleAmount, long balanceSaleNumber, double balanceSaleAmount){
+        MonthSale monthSale = monthSaleRepository.findById(Id).orElseThrow(RuntimeException::new);
+        monthSale.setMonthlySaleAmount(monthSale.getMonthlySaleAmount() + saleAmount);
+        monthSale.setBalanceSalesNumber(monthSale.getBalanceSalesNumber() + balanceSaleNumber);
+        monthSale.setBalanceSalePayment(monthSale.getBalanceSalePayment() + balanceSaleAmount);
+        monthSaleRepository.saveAndFlush(monthSale);
+        logger.info("MonthSale {}, {} Updated", monthSale.getMonth(), monthSale.getYear());
+    }
 
     public MonthSale createMonthSale(MonthSaleRequest monthSaleRequest){
         logger.info("Creating New MonthSale with current Month {} and Year{}", monthSaleRequest.getMonth(), monthSaleRequest.getYear());
@@ -49,8 +80,8 @@ public class MonthSaleService {
 
     public void updateMonthSaleFormDaySale(MonthSale monthSale, double salePrice, PaymentStatus paymentStatus){
         monthSale.update(monthSale.getMonthlySaleAmount() + salePrice,
-                paymentStatus == PaymentStatus.BORROWED ? monthSale.getBalanceSalesNumber() + 1: monthSale.getBalanceSalesNumber(),
-                paymentStatus == PaymentStatus.BORROWED ? monthSale.getBalanceSalePayment() + salePrice : monthSale.getBalanceSalePayment());
+                paymentStatus == PaymentStatus.BALANCE ? monthSale.getBalanceSalesNumber() + 1: monthSale.getBalanceSalesNumber(),
+                paymentStatus == PaymentStatus.BALANCE ? monthSale.getBalanceSalePayment() + salePrice : monthSale.getBalanceSalePayment());
         logger.info("Updating MonthSale from Sale Create with Id {} and PaymentStatus {}", monthSale.getId(), paymentStatus);
         monthSaleRepository.saveAndFlush(monthSale);
     }
@@ -58,14 +89,14 @@ public class MonthSaleService {
     public void updatePaymentStatus(MonthSale monthSale, double salePrice){
         monthSale.setBalanceSalesNumber(monthSale.getBalanceSalesNumber() - 1);
         monthSale.setBalanceSalePayment(monthSale.getBalanceSalePayment() - salePrice);
-        logger.info("Updating MonthSale from Sale Update with Id {} and PaymentStatus {}", monthSale.getId(), PaymentStatus.BORROWED);
+        logger.info("Updating MonthSale from Sale Update with Id {} and PaymentStatus {}", monthSale.getId(), PaymentStatus.BALANCE);
         monthSaleRepository.saveAndFlush(monthSale);
     }
 
     public void updateFromDeleteSale(MonthSale monthSale, double salePrice, PaymentStatus paymentStatus){
         monthSale.update(monthSale.getMonthlySaleAmount() - salePrice,
-                paymentStatus == PaymentStatus.BORROWED ? monthSale.getBalanceSalesNumber() - 1 : monthSale.getBalanceSalesNumber(),
-                paymentStatus == PaymentStatus.BORROWED ? monthSale.getBalanceSalePayment() - salePrice : monthSale.getBalanceSalePayment());
+                paymentStatus == PaymentStatus.BALANCE ? monthSale.getBalanceSalesNumber() - 1 : monthSale.getBalanceSalesNumber(),
+                paymentStatus == PaymentStatus.BALANCE ? monthSale.getBalanceSalePayment() - salePrice : monthSale.getBalanceSalePayment());
         logger.info("Updating MonthSale from Sale Delete with Id {} and PaymentStatus {}", monthSale.getId(), paymentStatus);
         monthSaleRepository.saveAndFlush(monthSale);
     }

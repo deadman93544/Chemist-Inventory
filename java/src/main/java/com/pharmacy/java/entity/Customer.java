@@ -37,6 +37,12 @@ public class Customer {
         this.balance = customerRequest.getBalance();
     }
 
+    public Customer(String name, String phoneNum, double balance){
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.balance = balance;
+    }
+
     @Transient
     public void update(CustomerRequest customerRequest){
         this.name = customerRequest.getName();

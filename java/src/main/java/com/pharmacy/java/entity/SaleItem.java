@@ -47,6 +47,13 @@ public class SaleItem{
         this.saleItemPrice = saleItemPrice;
     }
 
+    public SaleItem(SaleItemRequest saleItemRequest, Sale sale, Item item){
+        this.sale = sale;
+        this.item = item;
+        this.quantity = saleItemRequest.getQuantity();
+        this.saleItemPrice = saleItemRequest.getSaleItemPrice();
+    }
+
     public void update(SaleItemRequest saleItemRequest, Sale sale, Item item, double saleItemPrice){
         this.sale = sale;
         this.item = item;

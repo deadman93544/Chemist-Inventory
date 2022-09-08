@@ -13,4 +13,6 @@ public class ItemRequest implements Request {
     private String name;
 
     private Double itemPrice;
+
+    private Boolean available;
 }

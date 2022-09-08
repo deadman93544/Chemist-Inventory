@@ -17,4 +17,6 @@ public class SaleItemRequest implements Request {
     private Long saleId;
 
     private ItemRequest itemRequest;
+
+    private double saleItemPrice;
 }

@@ -48,6 +48,7 @@ public class DaySale{
         this.numberOfSales = numberOfSales;
         this.balanceSalesNumber = balanceSalesNumber;
         this.balanceAmount = balanceAmount;
+        this.monthSale = monthSale;
     }
 
     public DaySale(DaySaleRequest daySaleRequest, MonthSale monthSale){
