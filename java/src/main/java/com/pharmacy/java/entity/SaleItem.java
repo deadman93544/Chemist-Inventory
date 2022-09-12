@@ -29,6 +29,8 @@ public class SaleItem{
     @JoinColumn(name = "item_id")
     private Item item;
 
+    private String itemName;
+
     private double quantity;
 
     private double saleItemPrice;
@@ -52,6 +54,7 @@ public class SaleItem{
         this.item = item;
         this.quantity = saleItemRequest.getQuantity();
         this.saleItemPrice = saleItemRequest.getSaleItemPrice();
+        this.itemName = item.getName();
     }
 
     public void update(SaleItemRequest saleItemRequest, Sale sale, Item item, double saleItemPrice){

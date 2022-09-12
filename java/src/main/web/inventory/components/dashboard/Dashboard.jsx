@@ -1,11 +1,15 @@
-import { Layout,} from "antd"
+import { Button, Col, Layout, Row,} from "antd"
 import { useEffect, useState } from "react"
 import DashboardContent from "./DashboardContent"
 import Sidebar from "./Sidebar"
+import { PlusOutlined } from '@ant-design/icons';
+import { useRouter } from "next/router";
 
 const {Header, Footer, Sider, Content} = Layout
 
 const Dashboard = () => {
+
+  const router = useRouter();
 
   const [contentStyle, setContentStyle] = useState({
     marginLeft: '200px',
@@ -47,7 +51,21 @@ const Dashboard = () => {
             padding: 0,
             background: '#111'
           }}
-        />
+        >
+          <Row justify="center" align="middle">
+              <Col span={20}></Col>
+              <Col span={4} style={{display:'flex', justifyContent:'center', padding:'10px'}}>
+                  <Button 
+                      shape="round" 
+                      icon={<PlusOutlined style={{fontWeight:'bolder'}}/>}
+                      size="large"
+                      onClick={() => router.push('/sales/add-sale')}
+                  >
+                      Add
+                  </Button>
+              </Col>
+          </Row>
+        </Header>
         <Content
           style={{
             margin: '24px 16px 24px',

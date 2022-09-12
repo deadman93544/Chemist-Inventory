@@ -1,6 +1,6 @@
 import Head from "next/head"
 
-const allSales = () => {
+const sales = () => {
   return (
     <>
       <Head>
@@ -12,4 +12,4 @@ const allSales = () => {
   )
 }
 
-export default allSales
+export default sales

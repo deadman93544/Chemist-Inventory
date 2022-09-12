@@ -1,12 +1,14 @@
-import {Button, Checkbox, Col, Divider, message, Modal, Row, Space, Table} from 'antd'
+import {Avatar, Breadcrumb, Button, Checkbox, Col, Divider, message, Modal, Row, Space, Table} from 'antd'
 import { useEffect, useState } from 'react'
-import {AiFillDelete, AiFillEdit, AiOutlinePlus} from 'react-icons/ai'
-// import ItemForm from './ItemForm';
-import { deleteInventoryItem, fetchInventoryItem, fetchInventoryList } from '../../controller/item';
+import {AiFillDelete, AiFillEdit, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai'
 import CustomerForm from './CustomerForm';
 import { deleteCustomer } from '../../controller/customer';
+import TableSearchBar from '../TableSearchBar/TableSearchBar';
+import { ReloadOutlined, HomeOutlined, PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 
-const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
+
+const CustomerList = ({items, handleReload}) => {
+
 
     const [loading, setLoading] = useState(false);
     const [modalMode, setModalMode] = useState("");
@@ -15,41 +17,22 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
     const [currentItem, setCurrentItem] = useState(null);
     const [data, setData] = useState(null);
 
-    useEffect(() => {
-        if(addItem){
-            showAddEditModal("Add", null);
+    const handleChange = (val) => {
+        console.log(val);
+        if(val.length <= 2) {
+            setData(items)
         }
-    }, [addItem])
+        else if(val.length > 2){
+            let dat = items.filter(customer => {
+                return customer.name.includes(val)
+            })
+            setData(dat)
+        }
+    }
 
     useEffect(() => {
-        setLoading(true);
-        let modData = [];
-        console.log(items);
-        items.map(item => {
-            let date = item.lastModifiedDate === null ? new Date(item.createdDate) : new Date(item.lastModifiedDate)
-            modData.push({
-                key: item.id,
-                name: item.name,
-                balance: item.balance,
-                phoneNum: item.phoneNum,
-                modified: formatDate(date),
-                modifiedDate: date,
-            });
-        })
-        // console.log(modData);
-        setData(modData);
-        setLoading(false)
+        setData(items)
     }, [items])
-
-    const formatDate = (date) => {
-        let hour = `${date.getHours() > 9 ? date.getHours() : `0${date.getHours()}`}`
-        let minute = `${date.getMinutes() > 9 ? date.getMinutes() : `0${date.getMinutes()}`}`
-        let second = `${date.getSeconds() > 9 ? date.getSeconds() : `0${date.getSeconds()}`}`
-        let day = `${date.getDate() > 9 ? date.getDate() : `0${date.getDate()}`}`
-        let month = `${date.getMonth() > 9 ? date.getMonth() : `0${date.getMonth()}`}`
-        let year = `${date.getFullYear()}`
-        return `${hour}:${minute}:${second}  ${day}/${month}/${year}`
-    }
 
     const onChange = (pagination, filters, sorter, extra) => {
         console.log('params', pagination, filters, sorter, extra);
@@ -78,7 +61,6 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
         setModalMode("");
         setAddEditModalVisible(false)
         setCurrentItem(null);
-        disableAdd();
     }
 
     const showDeleteModal = (item) => {
@@ -93,7 +75,6 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
 
     const handleDelete = async () => {
         let item = currentItem
-        // let res = await deleteInventoryItem(item.key);
         let res = await deleteCustomer(item.key);
         setDeleteModalVisible(false);
         if(res.data === 200){
@@ -102,7 +83,6 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
         else {
             errorMessage("Error deleting the customer " + item.name);
         }
-        // data.pop(item);
         setCurrentItem(null);
         handleReload(true)
     }
@@ -116,8 +96,7 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
         else {
             errorMessage(msg)
         }
-        // setReload(true);
-        handleReload(true)
+        handleReload()
     }
 
     const successMessage = (msg) => {
@@ -139,30 +118,30 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
         {
             title: 'Contact',
             dataIndex: 'phoneNum',
-            defaultSortOrder: 'descend',
-            // sorter: (a, b) => a.price - b.price,
+            // defaultSortOrder: 'descend',
             align: 'left'
         },
         {
             title: 'Balance',
             dataIndex: 'balance',
-            defaultSortOrder: 'descend',
-            sorter: (a, b) => a.available - b.available,
+            // defaultSortOrder: 'descend',
+            // sorter: (a, b) => a.available - b.available,
             align:'center'
         },
         {
             title: 'Last Modified',
             dataIndex: 'modified',
             sorter: (a, b) => a.modifiedDate - b.modifiedDate,
-            //   defaultSortOrder: 'descend',
         },
         {
             title: 'Action',
             key: 'action',
             render: (_, record) => (
-              <Space size="large" split={<><Divider /></>}>
-                <AiFillDelete size='20px' style={{cursor:'pointer'}}  onClick={() => showDeleteModal(record)}/>
-                <AiFillEdit size='20px' style={{cursor:'pointer'}} onClick={() => showAddEditModal("Edit", record)}/>
+              <Space size="middle" split={<><Divider /></>}>
+                <DeleteOutlined style={{cursor:'pointer', fontSize:'16px', color: '#2B7A0B'}}  onClick={() => showDeleteModal(record)}/>
+                <EditOutlined style={{cursor:'pointer', fontSize:'16px', color: '#2B7A0B'}} onClick={() => showAddEditModal("Edit", record)}/>
+                {/* <AiFillDelete size='20px' style={{cursor:'pointer'}}  onClick={() => showDeleteModal(record)}/>
+                <AiFillEdit size='20px' style={{cursor:'pointer'}} onClick={() => showAddEditModal("Edit", record)}/> */}
               </Space>
             ),
             align:'center'
@@ -171,28 +150,57 @@ const CustomerList = ({items, handleReload, addItem, disableAdd}) => {
 
     return (
         <>
-            <Table 
-                bordered={true}
-                loading={loading}
-                columns={columns}
-                dataSource={data}
-                onChange={onChange}
-                showSorterTooltip={false}
-                size='large'
-                pagination={{
-                    position: ['bottomCenter'],
-                }}
-            />
-            {/* <Row justify='center' align='middle'>
-                <Col span={10} style={{display:'flex', justifyContent:'center', padding:'10px'}}>
-                    <Button type='primary' size='large' onClick={() => showAddEditModal("Add", null)}>
-                        <Space>
-                            <AiOutlinePlus />
-                            Add
-                        </Space>
+            <Row justify="start" style={{margin:'10px 0'}} align='middle'>
+                <Col xl={3} lg={2} md={1} sm={0} xs={0}></Col>
+                <Col xl={6} lg={7} md={8} sm={11} xs={12} style={{padding:'0 10px'}}>
+                    <Space size='large' split={<Divider />}>
+                        <Breadcrumb>
+                            <Breadcrumb.Item>
+                                <a href="/" style={{color: '#2B7A0B'}}>
+                                    <Space><HomeOutlined style={{fontSize:'18px'}}/>Home</Space>
+                                </a>
+                            </Breadcrumb.Item>
+                        </Breadcrumb>
+                        <Avatar 
+                            icon={<ReloadOutlined style={{color: '#2B7A0B'}}/>} 
+                            style={{background:'transparent', cursor:'pointer'}}
+                            onClick={() => handleReload()}
+                        />
+                    </Space>
+                </Col>
+                <Col xl={6} lg={6} md={6} sm={2} xs={12} style={{display:'flex', justifyContent:'right', paddingRight:'2vw'}}>
+                    <Button 
+                        shape="round" 
+                        style={{border:'1px solid #2B7A0B', color:'#2B7A0B'}}
+                        icon={<PlusOutlined style={{fontWeight:'bolder'}}/>}
+                        size="large"
+                        onClick={() => showAddEditModal("Add", null)}
+                    >
+                        Add
                     </Button>
                 </Col>
-            </Row> */}
+                <Col xl={6} lg={7} md={8} sm={11} xs={24} style={{padding:'0 5px'}}>
+                    
+                    <TableSearchBar handleChange={handleChange} items={items}  placeholder="Search Item name..."/>
+                </Col>
+                <Col xl={3} lg={2} md={1} sm={0} xs={0}></Col>
+            </Row>
+            <Row justify="center">
+                <Col xl={18} lg={20} md={22} sm={24} xs={24}>
+                    <Table 
+                        bordered={true}
+                        loading={loading}
+                        columns={columns}
+                        dataSource={data}
+                        onChange={onChange}
+                        showSorterTooltip={false}
+                        size='large'
+                        pagination={{
+                            position: ['bottomCenter'],
+                        }}
+                    />
+                </Col>
+            </Row>
             <Modal 
                 title={`${modalMode} Customer`}
                 visible={addEditModalVisible}

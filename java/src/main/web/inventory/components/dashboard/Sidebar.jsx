@@ -24,7 +24,7 @@ const Sidebar = () => {
   const items = [
     getItem("Daily Sale", 0, <AiTwotoneCalendar style={{color:'white'}}/>, () => {router.push('/daySale')}),
     getItem("Monthly Sale", 1, <AiOutlineCalendar style={{color:'white'}}/>, () => {router.push('/monthSale')}),
-    getItem("All Sales", 2, <AiOutlineUnorderedList style={{color:'white'}}/>, () => {router.push('/allSales')}),
+    getItem("Sales", 2, <AiOutlineUnorderedList style={{color:'white'}}/>, () => {router.push('/sales')}),
     getItem("Inventory", 3, <AiOutlineMedicineBox style={{color:'white'}}/>, () => {router.push('/inventory')}),
     getItem("Customers", 4, <AiOutlineUsergroupAdd style={{color:'white'}}/>, () => {router.push('/customers')}),
     getItem("Billing", 5, <RiBillLine style={{color:'white'}}/>, () => {router.push('/billing')}),

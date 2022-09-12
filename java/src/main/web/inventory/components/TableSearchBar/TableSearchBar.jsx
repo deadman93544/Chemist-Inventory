@@ -1,12 +1,16 @@
 import { Input } from "antd"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {AiOutlineSearch} from 'react-icons/ai'
 
 // const {Search} = Input
 
-const TableSearchBar = ({handleChange}) => {
+const TableSearchBar = ({handleChange, items, placeholder}) => {
 
   const [value, setValue] = useState('')
+
+  useEffect(() => {
+    setValue('');
+  }, [items]);
 
   const onChange = (e) => {
     // console.log(e.target.value);
@@ -31,7 +35,7 @@ const TableSearchBar = ({handleChange}) => {
       >
         <AiOutlineSearch fontSize={20} />
         <Input
-          placeholder="Search here..."
+          placeholder={placeholder ? placeholder : "Search here..."}
           bordered={false}
           style={{ flexGrow: 1 }}
           value={value}

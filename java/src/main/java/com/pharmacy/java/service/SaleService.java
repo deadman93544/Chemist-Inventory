@@ -58,6 +58,7 @@ public class SaleService {
             customer = customerService.getOrCreateCustomer(saleRequest.getCustomerRequest());
             logger.info("Customer found or created with name {}", customer.getName());
         }
+
         DaySale daySale = daySaleService.getTopDaySale();
 
         Sale sale = saleRepository.saveAndFlush(new Sale(saleRequest, customer, daySale));
