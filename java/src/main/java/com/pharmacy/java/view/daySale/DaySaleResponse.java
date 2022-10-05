@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -22,7 +22,7 @@ public class DaySaleResponse implements Response {
 
     public DaySaleResponse(DaySale daySale){
         this.id = daySale.getId();
-        this.date = (Date) daySale.getDate();
+        this.date = daySale.getDate();
         this.daySaleAmount = daySale.getDaySaleAmount();
         this.numberOfCustomers = daySale.getNumberOfSales();
         this.balanceSalesNumber = daySale.getBalanceSalesNumber();

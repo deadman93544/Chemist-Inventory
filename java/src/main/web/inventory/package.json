@@ -12,6 +12,7 @@
     "antd": "^4.21.6",
     "axios": "^0.27.2",
     "next": "12.2.2",
+    "paytm-blink-checkout-react": "^0.0.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.4.0"

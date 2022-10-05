@@ -11,7 +11,7 @@ const addSale = () => {
             <title>Add Sale</title>
             <link rel="icon" href="/favicon.png" />
           </Head>
-          <Layout>
+          <Layout style={{background:'whitesmoke', minHeight:'100vh'}}>
             <Content >
               <CreateSale />
             </Content>

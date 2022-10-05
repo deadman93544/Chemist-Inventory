@@ -1,6 +1,7 @@
 package com.pharmacy.java.view.item;
 
 import com.pharmacy.java.entity.Item;
+import com.pharmacy.java.enums.ItemType;
 import com.pharmacy.java.view.Response;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +24,11 @@ public class ItemResponse implements Response {
 
     private Date createdDate;
 
-    private boolean available;
+    private Long quantity;
+
+    private Long subQuantity;
+
+    private Long itemDivisions;
 
     public ItemResponse(Item item) {
         this.id = item.getId();
@@ -31,6 +36,8 @@ public class ItemResponse implements Response {
         this.itemPrice = item.getItemPrice();
         this.lastModifiedDate = item.getLastModifiedDate();
         this.createdDate = item.getCreatedDate();
-        this.available = item.isAvailable();
+        this.itemDivisions = item.getItemDivisions();
+        this.quantity = item.getQuantity();
+        this.subQuantity = item.getSubQuantity();
     }
 }

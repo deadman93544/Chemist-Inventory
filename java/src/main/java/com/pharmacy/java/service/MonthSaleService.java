@@ -1,5 +1,6 @@
 package com.pharmacy.java.service;
 
+import com.pharmacy.java.entity.DaySale;
 import com.pharmacy.java.entity.MonthSale;
 import com.pharmacy.java.enums.PaymentStatus;
 import com.pharmacy.java.jpa.MonthSaleRepository;
@@ -69,6 +70,10 @@ public class MonthSaleService {
         return monthSaleRepository.findById(monthSaleId)
                 .map(MonthSaleResponse::new)
                 .orElseThrow(RuntimeException::new);
+    }
+
+    public MonthSale getTopMonthSale(){
+        return monthSaleRepository.findTopByOrderByCreatedDateDesc();
     }
 
     public void updateMonthSale(MonthSaleRequest monthSaleRequest){

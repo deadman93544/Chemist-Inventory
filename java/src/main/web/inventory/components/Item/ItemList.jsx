@@ -5,6 +5,7 @@ import ItemForm from './ItemForm';
 import { deleteInventoryItem, fetchInventoryItem, fetchInventoryList } from '../../controller/item';
 import { ReloadOutlined, HomeOutlined, PlusOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import TableSearchBar from '../TableSearchBar/TableSearchBar';
+import Link from 'next/link';
 
 const ItemList = ({items, handleReload}) => {
 
@@ -121,8 +122,9 @@ const ItemList = ({items, handleReload}) => {
             align: 'left'
         },
         {
-            title: 'Available',
-            dataIndex: 'available',
+            title: 'Quantity',
+            dataIndex: 'quantity',
+            // render: (quantity, record) => record.itemDivisions > 0 ? `${quantity} +` : quantity,
             // sorter: (a, b) => a.available - b.available,
             align:'center'
         },
@@ -146,15 +148,17 @@ const ItemList = ({items, handleReload}) => {
 
     return (
         <>
-            <Row justify="start" style={{margin:'10px 0'}} align='middle'>
+            <Row justify="start" style={{margin:'0 0 10px 0'}} align='middle'>
                 <Col xl={3} lg={2} md={1} sm={0} xs={0}></Col>
                 <Col xl={6} lg={7} md={8} sm={11} xs={12} style={{padding:'0 10px'}}>
                     <Space size='large' split={<Divider />}>
                         <Breadcrumb>
                             <Breadcrumb.Item>
-                                <a href="/" style={{color: '#2B7A0B'}}>
-                                    <Space><HomeOutlined style={{fontSize:'18px'}}/>Home</Space>
-                                </a>
+                                <Link href="/">
+                                    <a  style={{color: '#2B7A0B'}}>
+                                        <Space><HomeOutlined style={{fontSize:'18px'}}/>Home</Space>
+                                    </a>
+                                </Link>
                             </Breadcrumb.Item>
                         </Breadcrumb>
                         <Avatar

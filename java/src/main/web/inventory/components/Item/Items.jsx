@@ -36,7 +36,10 @@ const Items = ({items}) => {
                 price: item.itemPrice,
                 modified: formatDate(date),
                 modifiedDate: date,
-                available: item.available ? "Yes" : "No"
+                quantity: item.quantity,
+                subQuantity: item.subQuantity,
+                itemDivisions: item.itemDivisions
+                // available: item.available ? "Yes" : "No"
             });
         })
         return modData;

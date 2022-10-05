@@ -1,8 +1,9 @@
 import axios from "axios"
+import PATH from "./baseController";
 
 export const fetchInventoryList = async () => {
     try {
-        const res = await axios.get('http://localhost:8080/api/item/list');
+        const res = await axios.get(`${PATH}/api/item/list`);
         const items = res.data;
         return {
             data: items,
@@ -19,7 +20,7 @@ export const fetchInventoryList = async () => {
 
 export const fetchInventoryItem = async (id) => {
     try {
-        const res = await axios.get('http://localhost:8080/api/item', {params: {ItemId: id}});
+        const res = await axios.get(`${PATH}/api/item`, {params: {ItemId: id}});
         const items = res.data;
         return {
             data: items,
@@ -36,7 +37,7 @@ export const fetchInventoryItem = async (id) => {
 
 export const addInventoryItem = async (item) => {
     try {
-        const res = await axios.post('http://localhost:8080/api/item', item);
+        const res = await axios.post(`${PATH}/api/item`, item);
         return {
             data: res.status,
             error: null
@@ -52,7 +53,7 @@ export const addInventoryItem = async (item) => {
 
 export const editInventoryItem = async (item) => {
     try {
-        const res = await axios.put('http://localhost:8080/api/item', item);
+        const res = await axios.put(`${PATH}/api/item`, item);
         return {
             data: res.status,
             error: null
@@ -68,7 +69,7 @@ export const editInventoryItem = async (item) => {
 
 export const deleteInventoryItem = async (id) => {
     try {
-        const res = await axios.delete('http://localhost:8080/api/item', {params: {ItemId: id}});
+        const res = await axios.delete(`${PATH}/api/item`, {params: {ItemId: id}});
         return {
             data: res.status,
             error: null

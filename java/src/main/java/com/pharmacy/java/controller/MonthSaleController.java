@@ -30,6 +30,11 @@ public class MonthSaleController {
         return monthSaleService.getMonthSaleById(monthSaleId);
     }
 
+    @GetMapping("/current")
+    public MonthSaleResponse getCurrentMonthSale(){
+        return new MonthSaleResponse(monthSaleService.getTopMonthSale());
+    }
+
     @GetMapping("/")
     public List<MonthSaleResponse> getAllMonthSales(){
         return monthSaleService.getAllMonthSales();

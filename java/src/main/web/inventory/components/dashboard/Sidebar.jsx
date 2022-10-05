@@ -10,6 +10,7 @@ import {
 } from 'react-icons/ai'
 import {HiOutlineDocumentDownload} from 'react-icons/hi'
 import {RiBillLine} from 'react-icons/ri'
+import {BsPaypal} from 'react-icons/bs'
 
 const Sidebar = () => {
 
@@ -30,6 +31,7 @@ const Sidebar = () => {
     getItem("Billing", 5, <RiBillLine style={{color:'white'}}/>, () => {router.push('/billing')}),
     getItem("Notifications", 6, <AiOutlineMessage style={{color:'white'}}/>, () => {router.push('/notifications')}),
     getItem("Reports", 7, <HiOutlineDocumentDownload style={{color:'white'}}/>, () => {router.push('/reports')}),
+    getItem("Paytm", 8, <BsPaypal style={{color:'white'}}/>, () => {router.push('/paytm')}),
   ]
 
   return (

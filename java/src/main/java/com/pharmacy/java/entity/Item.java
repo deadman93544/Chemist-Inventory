@@ -1,5 +1,6 @@
 package com.pharmacy.java.entity;
 
+import com.pharmacy.java.enums.ItemType;
 import com.pharmacy.java.view.item.ItemRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -22,9 +23,11 @@ public class Item{
 
     private String name;
 
-//    private long quantity;
+    private Long itemDivisions;
 
-    private boolean available = true;
+    private Long quantity;
+
+    private Long subQuantity;
 
     private double itemPrice;
 
@@ -38,13 +41,18 @@ public class Item{
 //        this.id = itemRequest.getId();
         this.name = itemRequest.getName();
         this.itemPrice = itemRequest.getItemPrice();
-        this.available = itemRequest.getAvailable();
+        this.quantity = itemRequest.getQuantity();
+        this.subQuantity = itemRequest.getSubQuantity();
+        this.itemDivisions = itemRequest.getItemDivisions();
     }
 
     @Transient
     public void update(ItemRequest itemRequest){
         this.name = itemRequest.getName();
         this.itemPrice = itemRequest.getItemPrice();
+        this.quantity = itemRequest.getQuantity();
+        this.subQuantity = itemRequest.getSubQuantity();
+        this.itemDivisions = itemRequest.getItemDivisions();
     }
 
     @PreUpdate

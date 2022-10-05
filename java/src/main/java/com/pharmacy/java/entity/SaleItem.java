@@ -31,7 +31,9 @@ public class SaleItem{
 
     private String itemName;
 
-    private double quantity;
+    private Long quantity;
+
+    private Long subQuantity;
 
     private double saleItemPrice;
 
@@ -41,26 +43,36 @@ public class SaleItem{
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
+    private Date expirationDate;
+
+    private String batchNumber;
+
     public SaleItem(SaleItemRequest saleItemRequest, Sale sale, Item item, double saleItemPrice){
 //        this.id = saleItemRequest.getId();
         this.sale = sale;
         this.item = item;
         this.quantity = saleItemRequest.getQuantity();
+        this.subQuantity = saleItemRequest.getSubQuantity();
         this.saleItemPrice = saleItemPrice;
+        this.batchNumber = saleItemRequest.getBatchNumber();
     }
 
     public SaleItem(SaleItemRequest saleItemRequest, Sale sale, Item item){
         this.sale = sale;
         this.item = item;
         this.quantity = saleItemRequest.getQuantity();
+        this.subQuantity = saleItemRequest.getSubQuantity();
         this.saleItemPrice = saleItemRequest.getSaleItemPrice();
         this.itemName = item.getName();
+        this.expirationDate = saleItemRequest.getExpirationDate();
+        this.batchNumber = saleItemRequest.getBatchNumber();
     }
 
     public void update(SaleItemRequest saleItemRequest, Sale sale, Item item, double saleItemPrice){
         this.sale = sale;
         this.item = item;
         this.quantity = saleItemRequest.getQuantity();
+        this.subQuantity = saleItemRequest.getSubQuantity();
         this.saleItemPrice = saleItemPrice;
     }
 

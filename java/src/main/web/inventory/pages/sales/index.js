@@ -1,4 +1,5 @@
 import Head from "next/head"
+import { Sales } from "../../components/sale/Sales"
 
 const sales = () => {
   return (
@@ -7,7 +8,7 @@ const sales = () => {
         <title>Sales</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <div>allSales</div>
+      <Sales />
     </>
   )
 }

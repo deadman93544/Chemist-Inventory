@@ -1,19 +1,51 @@
-import { Button, Col, Layout, Row,} from "antd"
+import { Button, Col, Layout, message, Row,} from "antd"
 import { useEffect, useState } from "react"
 import DashboardContent from "./DashboardContent"
 import Sidebar from "./Sidebar"
 import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from "next/router";
+import { fetchDaySale } from "../../controller/daySale";
+import { fetchMonthSale } from "../../controller/monthSale";
 
 const {Header, Footer, Sider, Content} = Layout
 
 const Dashboard = () => {
 
   const router = useRouter();
+  
 
   const [contentStyle, setContentStyle] = useState({
     marginLeft: '200px',
   });
+  const [daySale, setDaySale] = useState(null);
+  const [monthSale, setMonthSale] = useState(null);
+  
+  const fetchCurrentDaySale = async() => {
+    const {data, error} = await fetchDaySale();
+    if (error !== null) {
+        message.error("Unable to fetch Day Sale Amount");
+    }
+    else {
+        console.log(data);
+        setDaySale(data)
+    }
+  }
+
+  const fetchCurrentMonthSale = async() => {
+    const {data, error} = await fetchMonthSale();
+    if (error !== null) {
+        message.error("Unable to fetch Month Sale Amount");
+    }
+    else {
+        console.log(data);
+        setMonthSale(data)
+    }
+  }
+
+  useEffect(() => {
+    fetchCurrentDaySale();
+    fetchCurrentMonthSale();
+  }, [])
   
   return (
     <>
@@ -73,7 +105,7 @@ const Dashboard = () => {
             background:'whitesmoke'
           }}
         >
-          <DashboardContent styleObj={contentStyle}/>
+          <DashboardContent styleObj={contentStyle} daySale={daySale && daySale} monthSale={monthSale && monthSale}/>
         </Content>
       </Layout>
   </Layout>

@@ -29,4 +29,6 @@ public class SaleRequest implements Request {
 
     private Double balance;
 
+    private String doctorName;
+
 }

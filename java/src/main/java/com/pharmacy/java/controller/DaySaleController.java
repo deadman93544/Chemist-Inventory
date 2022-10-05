@@ -30,6 +30,11 @@ public class DaySaleController {
         return daySaleService.getDaySaleById(daySaleId);
     }
 
+    @GetMapping("/today")
+    public DaySaleResponse getTodayDaySale(){
+        return new DaySaleResponse(daySaleService.getTopDaySale());
+    }
+
     @GetMapping("/list")
     public List<DaySaleResponse> getAllDaySale(){
         return daySaleService.getAllDaySales();

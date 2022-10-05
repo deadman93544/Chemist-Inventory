@@ -35,6 +35,9 @@ public class SaleItemService {
 
     public void createSaleItem(SaleItemRequest saleItemRequest, Sale sale){
         Item item = itemService.getItemById(saleItemRequest.getItemRequest());
+        saleItemRequest.getItemRequest().setQuantity(saleItemRequest.getQuantity());
+        saleItemRequest.getItemRequest().setSubQuantity(saleItemRequest.getSubQuantity());
+        itemService.updateQuantities(saleItemRequest.getItemRequest());
         saleItemRepository.saveAndFlush(new SaleItem(saleItemRequest, sale, item));
     }
 

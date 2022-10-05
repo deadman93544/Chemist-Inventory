@@ -52,6 +52,8 @@ public class Sale {
 
     private String customerName;
 
+    private String doctorName;
+
     public Sale(SaleRequest saleRequest, Customer customer, DaySale daySale){
 //        this.id = saleRequest.getId();
 //        this.saleItems = (Set<SaleItem>) saleRequest.getSaleItems();
@@ -63,6 +65,7 @@ public class Sale {
         this.customer = customer;
         this.daySale = daySale;
         this.customerName = customer == null ? saleRequest.getCustomerRequest().getName() : customer.getName();
+        this.doctorName = saleRequest.getDoctorName();
     }
 
     @Transient

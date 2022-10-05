@@ -53,6 +53,22 @@ public class ItemService {
         itemRepository.saveAndFlush(item);
     }
 
+    public void updateQuantities(ItemRequest itemRequest){
+        Item item = itemRepository.findById(itemRequest.getId()).orElseThrow(RuntimeException::new);
+        logger.info("Updating quantities of an Item with Id: {}", itemRequest.getId());
+        item.setQuantity(item.getQuantity() - itemRequest.getQuantity());
+        if(item.getItemDivisions() > 0){
+            if(item.getSubQuantity() < itemRequest.getSubQuantity()){
+                item.setQuantity(item.getQuantity() - 1);
+                item.setSubQuantity(item.getSubQuantity() + item.getItemDivisions() - itemRequest.getSubQuantity());
+            }
+            else {
+                item.setSubQuantity(itemRequest.getSubQuantity());
+            }
+        }
+        itemRepository.saveAndFlush(item);
+    }
+
     public void deleteItem(Long ItemId){
         Item item = itemRepository.findById(ItemId).orElseThrow(RuntimeException::new);
         logger.info("Deleting an Item with Id: {}", ItemId);

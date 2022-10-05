@@ -6,7 +6,6 @@ import { useEffect, useState } from "react"
 import { fetchCustomerList } from "../../controller/customer"
 import { PlusOutlined } from '@ant-design/icons';
 
-
 const {Content} = Layout
 
 const Customers = ({customers}) => {

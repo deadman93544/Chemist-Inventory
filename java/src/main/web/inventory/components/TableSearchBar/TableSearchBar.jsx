@@ -1,5 +1,5 @@
 import { Input } from "antd"
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {AiOutlineSearch} from 'react-icons/ai'
 
 // const {Search} = Input
@@ -7,9 +7,18 @@ import {AiOutlineSearch} from 'react-icons/ai'
 const TableSearchBar = ({handleChange, items, placeholder}) => {
 
   const [value, setValue] = useState('')
+  const inputRef = useRef(null);
 
   useEffect(() => {
     setValue('');
+    window.addEventListener("keydown",function (e) {             
+      if (e.keyCode === 114 || (e.ctrlKey && e.keyCode === 70)) {        
+          e.preventDefault();         
+          console.log("Clicked");
+          inputRef.current.focus({cursor:'end'})
+          // trigger your filters here      
+      }
+    })
   }, [items]);
 
   const onChange = (e) => {
@@ -17,6 +26,8 @@ const TableSearchBar = ({handleChange, items, placeholder}) => {
     setValue(e.target.value)
     handleChange(e.target.value.toUpperCase())
   }
+
+  // useEffect(() => )
   
   return (
     <>
@@ -40,6 +51,7 @@ const TableSearchBar = ({handleChange, items, placeholder}) => {
           style={{ flexGrow: 1 }}
           value={value}
           onChange={onChange}
+          ref={inputRef}
         />
       </div>
     </>
