@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -21,12 +22,20 @@ public class SaleResponse implements Response {
     private String paymentStatus;
     private double salePrice;
     private CustomerResponse customerResponse;
+    private Date createdDate;
 
     public SaleResponse(Sale sale, List<SaleItemResponse> saleItemResponse){
         this.id = sale.getId();
         this.saleItemResponse = saleItemResponse;
         this.paymentStatus = String.valueOf(sale.getPaymentStatus());
         this.salePrice = sale.getDiscountedPrice();
-        this.customerResponse = new CustomerResponse(sale.getCustomer());
+        this.customerResponse = sale.getCustomer() == null ?
+                new CustomerResponse(new Customer(sale.getCustomerName(), null, 0)) :
+                new CustomerResponse(sale.getCustomer());
+        this.createdDate = sale.getCreatedDate();
+    }
+
+    public SaleResponse(Long id){
+        this.id = id;
     }
 }

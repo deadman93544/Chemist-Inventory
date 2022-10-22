@@ -1,5 +1,5 @@
 import { Avatar, Breadcrumb, Button, Card, Col, Collapse, Divider, Input, message, Modal, Row, Space, Switch, Typography } from "antd"
-import { ReloadOutlined, HomeOutlined, PlusOutlined, DeleteOutlined, EditOutlined, CaretRightOutlined } from '@ant-design/icons';
+import { ReloadOutlined, HomeOutlined, PlusOutlined, DeleteOutlined, EditOutlined, CheckOutlined } from '@ant-design/icons';
 import { useEffect, useState } from "react";
 import SaleItemForm from "./SaleItemForm";
 import { fetchCustomerList } from "../../controller/customer";
@@ -22,6 +22,8 @@ const CreateSale = () => {
   const [doctor, setDoctor] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState("PAID");
   const [balance, setBalance] = useState(0);
+  const [saleCreated, setSaleCreated] = useState(false);
+  const [saleId, setSaleId] = useState(null);
 
   const router = useRouter();
 
@@ -140,7 +142,7 @@ const CreateSale = () => {
         balance: balance,
         doctorName: doctor
     }
-    // console.log(obj);
+    addSale(obj);
   }
 
   const addSale = async(sale) => {
@@ -150,9 +152,9 @@ const CreateSale = () => {
     }
     else {
         console.log(data);
-        // setCustomerList(data);
+        setSaleId(data.id);
+        setSaleCreated(true);
     }
-    router.push('/dashboard')
   }
 
   useEffect(() => {fetchCustomers()}, [])
@@ -365,6 +367,40 @@ const CreateSale = () => {
                 </>
             }
         </Row>
+        <Modal
+            visible={saleCreated}
+            centered
+            footer={
+                <Row justify="center">
+                    <Col>
+                        <Button 
+                            type="primary" 
+                            shape='round' 
+                            size='large' 
+                            onClick={() => {router.push(`/`)}}
+                        >
+                            Go to Home
+                        </Button>
+                    </Col>
+                </Row>
+            }
+            // onOk={() => {router.push(`/billing/${saleId}`)}}
+            // onCancel={hideDeleteModal}
+            // okText="Delete"
+            // bodyStyle={{textAlign:'center'}}
+        >
+            <Row justify='center' align='center' gutter={[16, 16]}>
+                <Col span={24} style={{display:'flex', justifyContent:'center'}}>
+                    <Typography.Title level={4}>Sale Created Successfully.</Typography.Title>
+                </Col>
+                <Col span={24} style={{display:'flex', justifyContent:'center'}}>
+                    <CheckOutlined style={{fontSize:'50px', color:'whitesmoke', background:'#5FD068', borderRadius:'50%', padding:'20px'}} />
+                </Col>
+                <Col span={24} style={{display:'flex', justifyContent:'center'}}>
+                    <Typography.Paragraph>Billing Service not available</Typography.Paragraph>
+                </Col>
+            </Row>
+        </Modal>
     </>
   )
 }

@@ -6,6 +6,8 @@ import { PlusOutlined } from '@ant-design/icons';
 import { useRouter } from "next/router";
 import { fetchDaySale } from "../../controller/daySale";
 import { fetchMonthSale } from "../../controller/monthSale";
+import { fetchCustomerList } from "../../controller/customer";
+import { fetchInventoryList } from "../../controller/item";
 
 const {Header, Footer, Sider, Content} = Layout
 
@@ -19,6 +21,8 @@ const Dashboard = () => {
   });
   const [daySale, setDaySale] = useState(null);
   const [monthSale, setMonthSale] = useState(null);
+  const [customers, setCustomers] = useState(null);
+  const [items, setItems] = useState(null);
   
   const fetchCurrentDaySale = async() => {
     const {data, error} = await fetchDaySale();
@@ -26,7 +30,6 @@ const Dashboard = () => {
         message.error("Unable to fetch Day Sale Amount");
     }
     else {
-        console.log(data);
         setDaySale(data)
     }
   }
@@ -37,14 +40,35 @@ const Dashboard = () => {
         message.error("Unable to fetch Month Sale Amount");
     }
     else {
-        console.log(data);
         setMonthSale(data)
+    }
+  }
+
+  const fetchCustomers = async () => {
+    const {data, error} = await fetchCustomerList();
+    if(error !== null){
+      message.error("Unable to fetch Customers");
+    }
+    else {
+      setCustomers(data.length);
+    }
+  }
+
+  const fetchInventory = async () => {
+    const {data, error} = await fetchInventoryList();
+    if(error !== null){
+      message.error("Unable to fetch Inventory");
+    }
+    else {
+      setItems(data.length);
     }
   }
 
   useEffect(() => {
     fetchCurrentDaySale();
     fetchCurrentMonthSale();
+    fetchCustomers()
+    fetchInventory()
   }, [])
   
   return (
@@ -93,7 +117,7 @@ const Dashboard = () => {
                       size="large"
                       onClick={() => router.push('/sales/add-sale')}
                   >
-                      Add
+                      Add Sale
                   </Button>
               </Col>
           </Row>
@@ -105,7 +129,13 @@ const Dashboard = () => {
             background:'whitesmoke'
           }}
         >
-          <DashboardContent styleObj={contentStyle} daySale={daySale && daySale} monthSale={monthSale && monthSale}/>
+          <DashboardContent 
+            styleObj={contentStyle} 
+            daySale={daySale && daySale} 
+            monthSale={monthSale && monthSale}
+            customers={customers && customers}
+            inventory={items && items}
+          />
         </Content>
       </Layout>
   </Layout>

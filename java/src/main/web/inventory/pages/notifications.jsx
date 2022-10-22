@@ -1,13 +1,15 @@
-import Head from "next/head"
+import Head from 'next/head';
+import PageNotAvailable from '../components/Util/PageNotAvailable';
 
 const notifications = () => {
+
   return (
     <>
       <Head>
         <title>Notifications</title>
         <link rel="icon" href="/favicon.png" />
       </Head>
-      <div>notifications</div>
+      <PageNotAvailable />
     </>
   )
 }

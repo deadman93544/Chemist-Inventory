@@ -52,7 +52,7 @@ public class SaleService {
     public SaleService() {
     }
 
-    public void createSale(SaleRequest saleRequest){
+    public SaleResponse createSale(SaleRequest saleRequest){
         Customer customer = null;
         if(saleRequest.getCustomerRequest().getPhoneNum() != null){
             customer = customerService.getOrCreateCustomer(saleRequest.getCustomerRequest());
@@ -76,43 +76,10 @@ public class SaleService {
                 sale.getPaymentStatus() == PaymentStatus.BALANCE ? 1 : 0,
                 sale.getPaymentStatus() == PaymentStatus.BALANCE ? sale.getBalance() : 0
         );
+        return new SaleResponse(sale.getId());
     }
 
-//    public void createSale(SaleRequest saleRequest){
-//        Customer customer = null;
-//        if(saleRequest.getCustomerRequest().getPhoneNum() != null){
-//            logger.info("Customer is found in the given SaleRequest::CustomerRequest with name: {}", saleRequest.getCustomerRequest().getName());
-//            customer = customerRepository.findById(saleRequest.getCustomerRequest().getId())
-//                .orElse(customerService.createCustomer(saleRequest.getCustomerRequest()));
-//            logger.info("Customer Id: " + customer.getName() + customer.getId());
-//        }
-//
-//        DaySale daySale = daySaleRepository.findTopByOrderByCreatedDateDesc();
-////        logger.info("DaySale is found with Id: {}", daySale.getId());
-//        if (daySale == null || daySale.getCreatedDate().before(new DateTime().withTimeAtStartOfDay().toDate())){
-//            logger.info("Today's DaySale not found, creating with Date: {}", new Date().getDate());
-//            DaySaleRequest daySaleRequest = new DaySaleRequest();
-//            daySaleRequest.update(null, new Date(), 0, 0, 0, 0);
-//            daySale = daySaleService.createDaySale(daySaleRequest);
-//        }
-//
-//        logger.info("Creating new Sale");
-//        Sale sale = saleRepository.saveAndFlush(new Sale(saleRequest, 0.0, customer, daySale));
-//        logger.info("Setting sale Id {} for each saleItem", sale.getId());
-//        saleRequest.getSaleItemRequests().
-//                forEach(saleItemRequest -> saleItemRequest.setSaleId(sale.getId()));
-//        double salePrice = saleItemService.saveAllSaleItems(saleRequest.getSaleItemRequests());
-//        logger.info("Saving all the SaleItem from SaleItemService with salePrice: {}", salePrice);
-//        sale.updateSalePrice(salePrice);
-//        saleRepository.saveAndFlush(sale);
-//
-//        if (customer != null && saleRequest.getPaymentStatus() == PaymentStatus.BALANCE) {
-//            logger.info("Updating Sales PaymentStatus {} in customer with Id {}", PaymentStatus.BALANCE, customer.getId());
-//            customerService.updateFromSales(customer, salePrice);
-//        }
-//        logger.info("Updating Sale Amount in DaySale");
-//        daySaleService.updateDaySaleFromSales(daySale, salePrice, saleRequest.getPaymentStatus());
-//    }
+
 
     public List<SaleResponse> getAllSales(){
         logger.info("Returning a list of All Sales");

@@ -1,4 +1,4 @@
-import {Avatar, Breadcrumb, Button, Checkbox, Col, Divider, message, Modal, Row, Space, Table} from 'antd'
+import {Affix, Avatar, Breadcrumb, Button, Checkbox, Col, Divider, message, Modal, Row, Space, Table} from 'antd'
 import { useEffect, useState } from 'react'
 import {AiFillDelete, AiFillEdit, AiOutlineHome, AiOutlinePlus} from 'react-icons/ai'
 import CustomerForm from './CustomerForm';
@@ -151,7 +151,8 @@ const CustomerList = ({items, handleReload}) => {
 
     return (
         <>
-            <Row justify="start" style={{margin:'0 0 10px 0'}} align='middle'>
+            <Affix>
+            <Row justify="start" style={{margin:'0 0 10px 0', padding:'10px 0', backgroundColor:'whitesmoke'}} align='middle'>
                 <Col xl={3} lg={2} md={1} sm={0} xs={0}></Col>
                 <Col xl={6} lg={7} md={8} sm={11} xs={12} style={{padding:'0 10px'}}>
                     <Space size='large' split={<Divider />}>
@@ -188,6 +189,7 @@ const CustomerList = ({items, handleReload}) => {
                 </Col>
                 <Col xl={3} lg={2} md={1} sm={0} xs={0}></Col>
             </Row>
+            </Affix>
             <Row justify="center">
                 <Col xl={18} lg={20} md={22} sm={24} xs={24}>
                     <Table 

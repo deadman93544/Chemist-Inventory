@@ -3,36 +3,40 @@ import { useEffect } from "react"
 import InfoCard from "./InfoCard"
 import {AiTwotoneCalendar, AiOutlineCalendar, AiOutlineMedicineBox, AiOutlineUsergroupAdd} from 'react-icons/ai'
 
-const DashboardContent = ({styleObj, daySale, monthSale}) => {
+const DashboardContent = ({styleObj, daySale, monthSale, customers, inventory}) => {
 
   const info = [
     {
         'title': 'Monthly Sale',
         icon: <AiOutlineCalendar style={{color:'blue', fontSize:'25px'}}/>,
         data: monthSale && monthSale.monthlySaleAmount,
-        sub: null,
-        link:'/inventory'
+        prefix: '₹',
+        link: '/monthSale',
+        precision: 2
     },
     {
         'title': 'Daily Sale',
         icon: <AiTwotoneCalendar style={{color:'blue', fontSize:'25px'}}/>,
         data: daySale && daySale.daySaleAmount,
-        sub: null,
-        link:'/inventory'
+        prefix: '₹',
+        link: '/daySale',
+        precision: 2
     },
     {
         'title': 'Inventory',
         icon: <AiOutlineMedicineBox style={{color:'blue', fontSize:'25px'}}/>,
-        data: 10239,
+        data: inventory && inventory,
         sub: 'items',
-        link:'/inventory'
+        link:'/inventory',
+        precision: 0
     },
     {
         'title': 'Customers',
         icon: <AiOutlineUsergroupAdd style={{color:'blue', fontSize:'25px'}}/>,
-        data: 10239,
+        data: customers && customers,
         sub: 'people',
-        link:'/inventory'
+        link:'/customers',
+        precision: 0
     }
   ]
 

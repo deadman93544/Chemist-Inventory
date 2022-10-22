@@ -21,8 +21,8 @@ public class SaleController {
 //    }
 
     @PostMapping
-    public void createSale(@RequestBody SaleRequest saleRequest){
-        saleService.createSale(saleRequest);
+    public SaleResponse createSale(@RequestBody SaleRequest saleRequest){
+        return saleService.createSale(saleRequest);
     }
 
     @GetMapping
