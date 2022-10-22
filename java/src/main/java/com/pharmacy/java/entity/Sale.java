@@ -28,7 +28,13 @@ public class Sale {
     @Enumerated(EnumType.STRING)
     private PaymentStatus paymentStatus;
 
-    private double salePrice;
+    private double actualPrice;
+
+    private double discountPercent;
+
+    private double discountedPrice;
+
+    private double balance;
 
     @ManyToOne
     @JoinColumn(name = "daySale_id")
@@ -44,25 +50,31 @@ public class Sale {
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdDate;
 
-    public Sale(SaleRequest saleRequest, double salePrice, Customer customer, DaySale daySale){
+    private String customerName;
+
+    public Sale(SaleRequest saleRequest, Customer customer, DaySale daySale){
 //        this.id = saleRequest.getId();
 //        this.saleItems = (Set<SaleItem>) saleRequest.getSaleItems();
         this.paymentStatus = saleRequest.getPaymentStatus();
-        this.salePrice = salePrice;
+        this.actualPrice = saleRequest.getActualPrice();
+        this.discountPercent = saleRequest.getDiscountPercent();
+        this.discountedPrice = saleRequest.getDiscountedPrice();
+        this.balance = saleRequest.getBalance();
         this.customer = customer;
         this.daySale = daySale;
+        this.customerName = customer == null ? saleRequest.getCustomerRequest().getName() : customer.getName();
     }
 
     @Transient
     public void update(PaymentStatus paymentStatus, double salePrice, Customer customer){
         this.paymentStatus = paymentStatus;
-        this.salePrice = salePrice;
+        this.actualPrice = salePrice;
         this.customer = customer;
     }
 
     @Transient
     public void updateSalePrice(double salePrice){
-        this.salePrice = salePrice;
+        this.actualPrice = salePrice;
     }
 
     @PreUpdate

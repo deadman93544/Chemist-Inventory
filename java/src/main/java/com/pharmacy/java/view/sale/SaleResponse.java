@@ -26,7 +26,7 @@ public class SaleResponse implements Response {
         this.id = sale.getId();
         this.saleItemResponse = saleItemResponse;
         this.paymentStatus = String.valueOf(sale.getPaymentStatus());
-        this.salePrice = sale.getSalePrice();
+        this.salePrice = sale.getDiscountedPrice();
         this.customerResponse = new CustomerResponse(sale.getCustomer());
     }
 }

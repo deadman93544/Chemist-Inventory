@@ -24,6 +24,8 @@ public class Item{
 
 //    private long quantity;
 
+    private boolean available = true;
+
     private double itemPrice;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -36,6 +38,7 @@ public class Item{
 //        this.id = itemRequest.getId();
         this.name = itemRequest.getName();
         this.itemPrice = itemRequest.getItemPrice();
+        this.available = itemRequest.getAvailable();
     }
 
     @Transient

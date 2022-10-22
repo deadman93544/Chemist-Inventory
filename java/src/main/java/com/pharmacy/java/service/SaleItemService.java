@@ -33,6 +33,11 @@ public class SaleItemService {
     @Autowired
     private SaleRepository saleRepository;
 
+    public void createSaleItem(SaleItemRequest saleItemRequest, Sale sale){
+        Item item = itemService.getItemById(saleItemRequest.getItemRequest());
+        saleItemRepository.saveAndFlush(new SaleItem(saleItemRequest, sale, item));
+    }
+
     public SaleItem createSaleItem(SaleItemRequest saleItemRequest){
         Item item = itemRepository.findById(saleItemRequest.getItemRequest().getId())
                 .orElse(itemService.createItem(saleItemRequest.getItemRequest()));
@@ -66,23 +71,23 @@ public class SaleItemService {
                 .orElseThrow(RuntimeException::new);
     }
 
-    public double updateSaleItem(SaleItemRequest saleItemRequest){
-        SaleItem saleItem = saleItemRepository.findById(saleItemRequest.getId()).orElseThrow(RuntimeException::new);
-        Item item = itemRepository.findById(saleItemRequest.getItemRequest().getId())
-                .orElse(itemRepository.saveAndFlush(new Item(saleItemRequest.getItemRequest())));
-        Sale sale = saleRepository.findById(saleItemRequest.getSaleId()).orElseThrow(RuntimeException::new);
-        double saleItemPrice = item.getItemPrice() * saleItemRequest.getQuantity();
-        sale.updateSalePrice(sale.getSalePrice() == 0 ? + saleItemPrice : - saleItem.getSaleItemPrice() + saleItemPrice);
-        saleRepository.saveAndFlush(sale);
-        saleItem.update(saleItemRequest, sale, item, saleItemPrice);
-        return saleItemRepository.saveAndFlush(saleItem).getSaleItemPrice();
+    public void updateSaleItem(SaleItemRequest saleItemRequest){
+//        SaleItem saleItem = saleItemRepository.findById(saleItemRequest.getId()).orElseThrow(RuntimeException::new);
+//        Item item = itemRepository.findById(saleItemRequest.getItemRequest().getId())
+//                .orElse(itemRepository.saveAndFlush(new Item(saleItemRequest.getItemRequest())));
+//        Sale sale = saleRepository.findById(saleItemRequest.getSaleId()).orElseThrow(RuntimeException::new);
+//        double saleItemPrice = item.getItemPrice() * saleItemRequest.getQuantity();
+//        sale.updateSalePrice(sale.getSalePrice() == 0 ? + saleItemPrice : - saleItem.getSaleItemPrice() + saleItemPrice);
+//        saleRepository.saveAndFlush(sale);
+//        saleItem.update(saleItemRequest, sale, item, saleItemPrice);
+//        return saleItemRepository.saveAndFlush(saleItem).getSaleItemPrice();
     }
 
     public void deleteSaleItem(Long saleItemId){
-        SaleItem saleItem = saleItemRepository.findById(saleItemId).orElseThrow(RuntimeException::new);
-        Sale sale = saleRepository.findById(saleItem.getSale().getId()).orElseThrow(RuntimeException::new);
-        sale.updateSalePrice(sale.getSalePrice() - saleItem.getSaleItemPrice());
-        saleItemRepository.delete(saleItem);
-        saleRepository.saveAndFlush(sale);
+//        SaleItem saleItem = saleItemRepository.findById(saleItemId).orElseThrow(RuntimeException::new);
+//        Sale sale = saleRepository.findById(saleItem.getSale().getId()).orElseThrow(RuntimeException::new);
+//        sale.updateSalePrice(sale.getSalePrice() - saleItem.getSaleItemPrice());
+//        saleItemRepository.delete(saleItem);
+//        saleRepository.saveAndFlush(sale);
     }
 }

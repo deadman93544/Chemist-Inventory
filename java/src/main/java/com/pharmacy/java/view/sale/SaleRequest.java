@@ -21,4 +21,12 @@ public class SaleRequest implements Request {
 
     private CustomerRequest customerRequest;
 
+    private Double discountPercent;
+
+    private Double actualPrice;
+
+    private Double discountedPrice;
+
+    private Double balance;
+
 }
